@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.demo-tabs .radius {
+    border: 1px solid var(--el-border-color);
+    border-radius: 0;
+    padding: 20px;
+}
