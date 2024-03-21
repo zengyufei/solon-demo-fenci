@@ -3,12 +3,14 @@ chcp 65001
 
 echo 打包
 
-cd %~dp0
+cd ..
+echo %cd%
 cd /D solon-demo-fenci
 
 call mvn -U -T 1C clean package -Dmaven.test.skip=true
 
-cd %~dp0
+cd ..
+echo %cd%
 cd ./bin
 
 pause

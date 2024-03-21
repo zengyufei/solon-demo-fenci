@@ -34,7 +34,7 @@ public class SystemStartupPrint implements EventListener<AppLoadEndEvent> {
 
             final StringBuilder stringBuilder = new StringBuilder(
                     "\n------------- " + appName + " (" + env + ") 启动成功 --by " + DateUtil.now() + " -------------\n");
-            stringBuilder.append("\t主页访问: --\n");
+            stringBuilder.append("\t主页访问: \n");
             stringBuilder.append("\t\t- 访问: http://")
                     .append("localhost")
                     .append(":")
