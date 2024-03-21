@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apdplat.word.WordSegmenter;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonProps;
 import org.noear.solon.annotation.Component;
@@ -25,9 +24,6 @@ public class SystemStartupPrint implements EventListener<AppLoadEndEvent> {
         log.info("启动完毕...");
 
         ThreadUtil.execute(() -> {
-            WordSegmenter.segWithStopWords("启动完毕...");
-        });
-        ThreadUtil.execute(() -> {
             final SolonProps cfg = Solon.cfg();
             final String appName = cfg.appName();
             final String env = cfg.env();
@@ -39,6 +35,14 @@ public class SystemStartupPrint implements EventListener<AppLoadEndEvent> {
             final StringBuilder stringBuilder = new StringBuilder(
                     "\n------------- " + appName + " (" + env + ") 启动成功 --by " + DateUtil.now() + " -------------\n");
             stringBuilder.append("\t主页访问: --\n");
+            stringBuilder.append("\t\t- 访问: http://")
+                    .append("localhost")
+                    .append(":")
+                    .append(port);
+            if (contextPath != null && !contextPath.isEmpty()) {
+                stringBuilder.append(contextPath);
+            }
+            stringBuilder.append("\n");
             for (String ip : ipList) {
                 stringBuilder.append("\t\t- 访问: http://")
                         .append(ip)
@@ -49,13 +53,13 @@ public class SystemStartupPrint implements EventListener<AppLoadEndEvent> {
                 }
                 stringBuilder.append("\n");
             }
-			try {
-				TimeUnit.SECONDS.sleep(5);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-			System.out.println(stringBuilder);
+            System.out.println(stringBuilder);
         });
     }
 
