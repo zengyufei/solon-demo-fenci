@@ -87,16 +87,16 @@ public class KeyWordController {
 
     @Post
     @Mapping("/word/add")
-    public String add(String word) {
-        DictionaryFactory.getDictionary().add(word);
+    public String add(String type, String word) {
+        DictionaryFactory.getDictionary(type).add(word);
 //        ResourceChangeNotifier.addDic(word);
         return "add success";
     }
 
     @Post
     @Mapping("/word/remove")
-    public String remove(String word) {
-        DictionaryFactory.getDictionary().remove(word);
+    public String remove(String type, String word) {
+        DictionaryFactory.getDictionary(type).remove(word);
 //        ResourceChangeNotifier.removeDic(word);
         return "remove success";
     }

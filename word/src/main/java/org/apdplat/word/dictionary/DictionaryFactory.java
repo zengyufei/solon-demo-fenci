@@ -1,21 +1,21 @@
 /**
- * 
+ *
  * APDPlat - Application Product Development Platform
  * Copyright (c) 2013, 杨尚川, yang-shangchuan@qq.com
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package org.apdplat.word.dictionary;
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,18 +55,35 @@ import java.util.stream.Stream;
  * @author 杨尚川
  */
 public final class DictionaryFactory {
+    private static final String defaultKey = "";
     private static final Logger LOGGER = LoggerFactory.getLogger(DictionaryFactory.class);
     private static final int INTERCEPT_LENGTH = WordConfTools.getInt("intercept.length", 16);
     private DictionaryFactory(){}
-    public static final Dictionary getDictionary(){
-        return DictionaryHolder.DIC;
+    public static Dictionary getDictionary(){
+        return DictionaryHolder.getByKey(defaultKey);
     }
     public static void reload(){
-        DictionaryHolder.reload();
+        DictionaryHolder.reload(defaultKey);
+    }
+    public static Dictionary getDictionary(String key){
+        if(key == null){
+            key = defaultKey;
+        }
+        return DictionaryHolder.getByKey(key);
+    }
+    public static void reload(String key){
+        if(key == null){
+            key = defaultKey;
+        }
+        DictionaryHolder.reload(key);
     }
     private static final class DictionaryHolder{
-        private static final Dictionary DIC = constructDictionary();
-        private static Dictionary constructDictionary(){  
+        private static final Map<String, Dictionary> cache = new ConcurrentHashMap<>();
+        private static Dictionary getByKey(String key){
+            return cache.computeIfAbsent(key, k -> constructDictionary());
+        }
+
+        private static Dictionary constructDictionary(){
             try{
                 //选择词典实现，可以通过参数选择不同的实现
                 String dicClass = WordConfTools.get("dic.class", "org.apdplat.word.dictionary.impl.TrieV4");
@@ -77,14 +95,16 @@ public final class DictionaryFactory {
             }
         }
         static{
-            reload();
+            reload(defaultKey);
         }
-        public static void reload(){
+        public static void reload(String key){
             AutoDetector.loadAndWatch(new ResourceLoader() {
+
+                private final Dictionary dictionary = getByKey(key);
 
                 @Override
                 public void clear() {
-                    DIC.clear();
+                    dictionary.clear();
                 }
 
                 @Override
@@ -111,11 +131,10 @@ public final class DictionaryFactory {
                         }
                     }
                     //构造词典
-                    DIC.addAll(words);
+                    dictionary.addAll(words);
                     //输出统计信息
                     showStatistics(words);
-                    if (DIC instanceof DictionaryTrie) {
-                        DictionaryTrie dictionaryTrie = (DictionaryTrie) DIC;
+                    if (dictionary instanceof DictionaryTrie dictionaryTrie) {
                         dictionaryTrie.showConflict();
                     }
                     System.gc();
@@ -136,7 +155,7 @@ public final class DictionaryFactory {
                         totalLength += len * map.get(len).get();
                         wordCount += map.get(len).get();
                     }
-                    LOGGER.info("词数目：" + wordCount + "，词典最大词长：" + DIC.getMaxLength());
+                    LOGGER.info("词数目：" + wordCount + "，词典最大词长：" + dictionary.getMaxLength());
                     for (int len : map.keySet()) {
                         if (len < 10) {
                             LOGGER.info("词长  " + len + " 的词数为：" + map.get(len));
@@ -150,13 +169,13 @@ public final class DictionaryFactory {
                 @Override
                 public void add(String line) {
                     //加入词典
-                    getWords(line).stream().filter(w -> w.length() <= INTERCEPT_LENGTH).forEach(DIC::add);
+                    getWords(line).stream().filter(w -> w.length() <= INTERCEPT_LENGTH).forEach(dictionary::add);
                 }
 
                 @Override
                 public void remove(String line) {
                     //移除词
-                    getWords(line).forEach(DIC::remove);
+                    getWords(line).forEach(dictionary::remove);
                 }
 
                 private List<String> getAllWords(List<String> lines) {
