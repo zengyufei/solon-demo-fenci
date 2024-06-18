@@ -3,9 +3,9 @@ package com.example.demo.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import com.example.demo.utils.ResourceChangeNotifier;
 import com.example.demo.utils.WordEntity;
 import org.apdplat.word.WordSegmenter;
+import org.apdplat.word.dictionary.DictionaryFactory;
 import org.apdplat.word.segmentation.Word;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -88,14 +88,16 @@ public class KeyWordController {
     @Post
     @Mapping("/word/add")
     public String add(String word) {
-        ResourceChangeNotifier.addDic(word);
+        DictionaryFactory.getDictionary().add(word);
+//        ResourceChangeNotifier.addDic(word);
         return "add success";
     }
 
     @Post
     @Mapping("/word/remove")
     public String remove(String word) {
-        ResourceChangeNotifier.removeDic(word);
+        DictionaryFactory.getDictionary().remove(word);
+//        ResourceChangeNotifier.removeDic(word);
         return "remove success";
     }
 

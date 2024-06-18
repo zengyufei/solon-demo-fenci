@@ -1,146 +1,146 @@
-package com.example.demo.utils;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
-/**
- * 资源变化实时通知
- * @author 杨尚川
- */
-public class ResourceChangeNotifier {
-    private static JedisPool jedisPool;
-    public static void setJedisPool(JedisPool jedisPool){
-        ResourceChangeNotifier.jedisPool = jedisPool;
-    }
-    /**
-     * 分词词典 - 增加一个词
-     * @param item 词
-     */
-    public static void addDic(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("dic.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 分词词典 - 移除一个词
-     * @param item 词
-     */
-    public static void removeDic(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("dic.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 停用词 - 增加一个停用词
-     * @param item 停用词
-     */
-    public static void addStopword(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("stopwords.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 停用词 - 移除一个停用词
-     * @param item 停用词
-     */
-    public static void removeStopword(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("stopwords.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 数量词 - 增加一个数量词
-     * @param item 数量词
-     */
-    public static void addQuantifier(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("quantifier.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 数量词 - 移除一个数量词
-     * @param item 数量词
-     */
-    public static void removeQuantifier(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("quantifier.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 标点符号 - 增加一个标点符号
-     * @param item 标点符号
-     */
-    public static void addPunctuation(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("punctuation.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 标点符号 - 移除一个标点符号
-     * @param item 标点符号
-     */
-    public static void removePunctuation(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("punctuation.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 百家姓 - 增加一个百家姓
-     * @param item 百家姓
-     */
-    public static void addSurname(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("surname.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 百家姓 - 移除一个百家姓
-     * @param item 百家姓
-     */
-    public static void removeSurname(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("surname.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 二元模型 - 增加一个二元模型
-     * @param item 二元模型
-     */
-    public static void addBigram(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("bigram.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 二元模型 - 移除一个二元模型
-     * @param item 二元模型
-     */
-    public static void removeBigram(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("bigram.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 三元模型 - 增加一个三元模型
-     * @param item 三元模型
-     */
-    public static void addTrigram(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("trigram.txt.add", item);
-        jedisPool.returnResource(jedis);
-    }
-    /**
-     * 三元模型 - 移除一个三元模型
-     * @param item 三元模型
-     */
-    public static void removeTrigram(String item){
-        Jedis jedis = jedisPool.getResource();
-        jedis.publish("trigram.txt.remove", item);
-        jedisPool.returnResource(jedis);
-    }
-    public static void main(String[] args){
-        ResourceChangeNotifier.setJedisPool(new JedisPool(new JedisPoolConfig(), "localhost", 6379));
-        ResourceChangeNotifier.addDic("杨尚川");
-    }
-}
+//package com.example.demo.utils;
+//
+//import redis.clients.jedis.Jedis;
+//import redis.clients.jedis.JedisPool;
+//import redis.clients.jedis.JedisPoolConfig;
+//
+///**
+// * 资源变化实时通知
+// * @author 杨尚川
+// */
+//public class ResourceChangeNotifier {
+//    private static JedisPool jedisPool;
+//    public static void setJedisPool(JedisPool jedisPool){
+//        ResourceChangeNotifier.jedisPool = jedisPool;
+//    }
+//    /**
+//     * 分词词典 - 增加一个词
+//     * @param item 词
+//     */
+//    public static void addDic(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("dic.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 分词词典 - 移除一个词
+//     * @param item 词
+//     */
+//    public static void removeDic(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("dic.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 停用词 - 增加一个停用词
+//     * @param item 停用词
+//     */
+//    public static void addStopword(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("stopwords.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 停用词 - 移除一个停用词
+//     * @param item 停用词
+//     */
+//    public static void removeStopword(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("stopwords.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 数量词 - 增加一个数量词
+//     * @param item 数量词
+//     */
+//    public static void addQuantifier(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("quantifier.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 数量词 - 移除一个数量词
+//     * @param item 数量词
+//     */
+//    public static void removeQuantifier(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("quantifier.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 标点符号 - 增加一个标点符号
+//     * @param item 标点符号
+//     */
+//    public static void addPunctuation(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("punctuation.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 标点符号 - 移除一个标点符号
+//     * @param item 标点符号
+//     */
+//    public static void removePunctuation(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("punctuation.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 百家姓 - 增加一个百家姓
+//     * @param item 百家姓
+//     */
+//    public static void addSurname(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("surname.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 百家姓 - 移除一个百家姓
+//     * @param item 百家姓
+//     */
+//    public static void removeSurname(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("surname.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 二元模型 - 增加一个二元模型
+//     * @param item 二元模型
+//     */
+//    public static void addBigram(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("bigram.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 二元模型 - 移除一个二元模型
+//     * @param item 二元模型
+//     */
+//    public static void removeBigram(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("bigram.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 三元模型 - 增加一个三元模型
+//     * @param item 三元模型
+//     */
+//    public static void addTrigram(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("trigram.txt.add", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    /**
+//     * 三元模型 - 移除一个三元模型
+//     * @param item 三元模型
+//     */
+//    public static void removeTrigram(String item){
+//        Jedis jedis = jedisPool.getResource();
+//        jedis.publish("trigram.txt.remove", item);
+//        jedisPool.returnResource(jedis);
+//    }
+//    public static void main(String[] args){
+//        ResourceChangeNotifier.setJedisPool(new JedisPool(new JedisPoolConfig(), "localhost", 6379));
+//        ResourceChangeNotifier.addDic("杨尚川");
+//    }
+//}
