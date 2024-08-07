@@ -100,6 +100,15 @@
                                 clearable
                         />
                     </div>
+                    <div style="margin-top: 5px">
+                        <span>末尾符号:</span>
+                        <el-input
+                                v-model="末尾符号"
+                                style="width: 100px"
+                                placeholder="输入符号"
+                                clearable
+                        />
+                    </div>
                 </div>
                 <div style="float: left;">
                     <el-divider direction="vertical"/>
@@ -273,7 +282,8 @@
             let 分词控件 = ref(初始词库)
             let 结果控件 = ref('')
             let 输出label = ref(true)
-            const 追加符号 = ref(':')
+            const 追加符号 = ref('：')
+            const 末尾符号 = ref('。')
             const 显示新增标注词窗口 = ref(false)
             const 标注词 = ref('')
             const inputValue = ref('')
@@ -298,6 +308,8 @@
                     data = {
                         "text": 测试文本控件.value,
                         "keyword": 分词控件.value,
+                        "symbol": 追加符号.value,
+                        "endSymbol": 末尾符号.value,
                         "showLabel": 输出label.value ? "1" : "0"
                     }
                 } else {
@@ -450,6 +462,7 @@
                 结果控件,
                 输出label,
                 追加符号,
+                末尾符号,
                 执行,
                 切换tab,
                 inputValue,

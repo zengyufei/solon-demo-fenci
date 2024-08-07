@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WordEntity {
+    private String key;
     private String word;
     private int beginPosition;
     private int endPosition;
